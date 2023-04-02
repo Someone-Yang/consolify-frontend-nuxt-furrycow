@@ -8,14 +8,12 @@
           登录
         </v-card-title>
         <v-card-subtitle>
-          神明赐予智者这新生之地。
+          登录到你干嘛哎哟的 Consolify
         </v-card-subtitle>
         <v-card-text>
           <v-form>
-            <v-text-field v-model="username" label="账户" hint="润云账户或氧化应用平台通用账户" placeholder="admin@runyun.cc" autofocus clearable></v-text-field>
-            <v-text-field v-model="password" label="密码" hint="账户的密码" type="password" clearable></v-text-field>
-            <v-checkbox label="会话持久化"></v-checkbox>
-            <p>要使此功能生效，需授权子用户 OxygenGlobalSessionController 允许全局读写您的账户 Session。</p>
+            <v-text-field v-model="username" label="账户" hint="您的 Consolify 账户名" placeholder="admin@runyun.cc" autofocus clearable></v-text-field>
+            <v-text-field v-model="password" label="密码" hint="您的账户密码" type="password" clearable></v-text-field>
             <v-btn @click="loginTest">登录</v-btn>
           </v-form>
         </v-card-text>
@@ -28,14 +26,14 @@
 <script>
 export default {
   name: 'IndexPage',
-  head: {
-    title: '登录',
-  },
   data(){
     return {
-      username:"",
-      password:""
+      username: '',
+      password: ''
     }
+  },
+  head: {
+    title: '账户登录',
   },
   methods: {
     showSnackBar(color,message){
@@ -44,24 +42,22 @@ export default {
     loginTest () {
       if (this.username) {
         if (this.password) {
-          this.$axios.post('/api/login', {
+          this.$axios.post('/api/account/login', {
             username: this.username,
             password: this.password
           })
           .then(response => {
-            if (response.data.code === 1200) {
+            if (response.data.code === 1000) {
               this.showSnackBar('success','登录成功！')
-            } else if (response.data.code === 1201) {
-              this.showSnackBar('error','密码错误。莓果键：' + response.data.berrykey)
-            } else if (response.data.code === 1202) {
-              this.showSnackBar('error','用户名不存在。莓果键：' + response.data.berrykey)
+            } else {
+              this.showSnackBar('error','登录失败！')
             }
           })
           .catch(error => {
-            this.showSnackBar('error','接口错误。' + error)
+            this.showSnackBar('error','登录失败。' + error.response.data.message + '。')
           });
         } else {
-          this.showSnackBar('warning','请输入密码。如果是第三方验证，请传入验证 key 。')
+          this.showSnackBar('warning','请输入密码。')
         }
       } else {
         this.showSnackBar('warning','请输入账户名。')

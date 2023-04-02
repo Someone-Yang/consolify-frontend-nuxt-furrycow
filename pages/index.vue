@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      载入中
+      跳转中
     </v-col>
   </v-row>
 </template>
