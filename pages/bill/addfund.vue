@@ -23,7 +23,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text :to="toPayPath">前往支付</v-btn>
+        <v-btn text color="primary" :to="toPayPath">前往支付</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -32,7 +32,8 @@
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'AddfundPage',
+  layout: 'bill',
   data(){
     return {
       price: 0,
@@ -54,23 +55,31 @@ export default {
       this.$refs.snackbar.snackBarPop(color,message)
     },
     createBill () {
-      this.$axios.post('/api/pay/createInvoice', {
-        payType: this.payType,
-        uuid: null,
-        instanceConfig: {
-          type: 'addfunds',
-          price: this.price
+      if (this.price > 0){
+        if (this.payType) {
+          this.$axios.post('/api/pay/createInvoice', {
+            payType: this.payType,
+            uuid: null,
+            instanceConfig: {
+              type: 'addfunds',
+              price: this.price
+            }
+          })
+          .then(response => {
+            this.showSnackBar('success','发起订单成功！订单：' + response.data.data.uuid + '。')
+            this.payId = response.data.data.uuid
+            this.showDialog = true
+            this.toPayPath = '/bill/pay/' + this.payId
+          })
+          .catch(error => {
+            this.showSnackBar('error','发起订单失败。' + error.response.data.message + '。')
+          });
+        } else {
+          this.showSnackBar('warning','您还尚未选择支付方式哦。')
         }
-      })
-      .then(response => {
-        this.showSnackBar('success','发起订单成功！订单：' + response.data.data.uuid + '。')
-        this.payId = response.data.data.uuid
-        this.showDialog = true
-        this.toPayPath = '/bill/pay/' + this.payId
-      })
-      .catch(error => {
-        this.showSnackBar('error','发起订单失败。' + error.response.data.message + '。')
-      });
+      } else {
+        this.showSnackBar('warning','您应该至少填写一个大于0的金额。')
+      }
     }
   },
 }

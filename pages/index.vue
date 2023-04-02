@@ -14,7 +14,7 @@ export default {
   },
   mounted() {
     this.$router.push({
-      path: `/auth/login`
+      path: '/table'
    })
   }
 }

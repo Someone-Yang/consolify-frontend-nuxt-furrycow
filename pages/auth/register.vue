@@ -14,8 +14,14 @@
           <v-form>
             <v-text-field v-model="username" label="账户名" hint="您的 Consolify 账户名" placeholder="admin@runyun.cc" autofocus clearable></v-text-field>
             <v-text-field v-model="password" label="密码" hint="您的账户密码" type="password" clearable></v-text-field>
-            <v-text-field v-model="email" label="电子邮箱" hint="可接收邮件的电子邮箱" placeholder="admin@runyun.cc" autofocus clearable></v-text-field>
-            <v-btn @click="getVerifyCode">获取验证码</v-btn>
+            <v-row>
+              <v-col cols="8">
+                <v-text-field v-model="email" label="电子邮箱" hint="可接收邮件的电子邮箱" placeholder="admin@runyun.cc" autofocus clearable></v-text-field>
+              </v-col>
+              <v-col cols="4">
+                <v-btn @click="getVerifyCode">获取验证码</v-btn>
+              </v-col>
+            </v-row>
             <v-text-field v-model="verifyCode" label="验证码" hint="邮件验证码" type="number" clearable></v-text-field>
             <v-text-field v-model="sex" label="sex" type="number" clearable></v-text-field>
             <v-text-field v-model="respect" label="尊称模式" type="number" clearable></v-text-field>
@@ -30,7 +36,8 @@
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'RegisterPage',
+  layout: 'auth',
   data(){
     return {
       username: '',
@@ -61,8 +68,8 @@ export default {
           })
           .then(response => {
             if (response.data.code === 1000) {
-              this.showSnackBar('success','注册成功！正在跳转到登录，请稍后。')
-              this.$router.push({path: '/auth/login'})
+              this.showSnackBar('success','注册成功！正在转到控制台。')
+              this.$router.push({path: '/table'})
             } else {
               this.showSnackBar('error','注册失败！')
             }
@@ -83,7 +90,7 @@ export default {
             username: this.username,
             password: this.password,
             email: this.email,
-            activity: 'register',
+            activity: 'Register from Runyun Furrycow Console',
             type: 'email'
           })
           .then(response => {

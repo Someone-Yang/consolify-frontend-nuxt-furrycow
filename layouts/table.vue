@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <AppBar title="润云" />
+    <AppBar title="工作台" />
     <v-main>
       <v-container>
         <Nuxt />
@@ -11,6 +11,6 @@
 
 <script>
 export default {
-  name: 'DefaultLayout',
+  name: 'TableLayout',
 }
 </script>

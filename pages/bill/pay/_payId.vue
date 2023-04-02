@@ -12,16 +12,35 @@
       </v-card>
     </v-col>
   </v-row>
+  <v-dialog v-model="showDialog">
+    <v-card>
+      <v-card-title>订单信息获取成功</v-card-title>
+      <v-card-text>
+        <p>您的订单可以支付。</p>
+        <p>订单号：{{ payId }}</p>
+        <p>订单地址：{{ payUrl }}</p>
+        <p>请在弹出的窗口扫码完成支付，或点击下方按钮跳转到支付页面。</p>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn text :href="payUrl" target="_blank">前往支付</v-btn>
+        <v-btn text color="primary" @click="showDialog = false">我已支付完成</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'PayPage',
+  layout: 'bill',
   data(){
     return {
       payId: '',
-      preSet: false
+      preSet: false,
+      showDialog: false,
+      payUrl: ''
     }
   },
   head: {
@@ -31,6 +50,7 @@ export default {
     if (this.$route.params.payId) {
       this.payId = this.$route.params.payId
       this.preSet = true
+      this.showDialog = true
       this.goPay ()
     }
   },
@@ -43,7 +63,10 @@ export default {
         uuid: this.payId,
       })
       .then(response => {
-        this.showSnackBar('success','发起订单成功！订单：' + response.data.data.url + '。')
+        this.payUrl = response.data.data.url
+        this.showDialog = true
+        this.showSnackBar('success','获取订单信息成功！')
+        window.open(this.payUrl,"_blank")
       })
       .catch(error => {
         this.showSnackBar('error','获取订单信息失败。' + error.response.data.message + '。请稍后再试。')

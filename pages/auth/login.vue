@@ -25,7 +25,8 @@
 
 <script>
 export default {
-  name: 'IndexPage',
+  name: 'LoginPage',
+  layout: 'auth',
   data(){
     return {
       username: '',
