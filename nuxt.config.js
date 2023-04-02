@@ -47,7 +47,7 @@ export default {
   },
   proxy:{
     '/api': {
-      target: 'http://124.222.16.226:3001/',
+      target: '',
       pathRewrite: {'^/api': ''}
   }
   },

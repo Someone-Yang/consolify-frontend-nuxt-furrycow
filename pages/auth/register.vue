@@ -18,7 +18,7 @@
             <v-btn @click="getVerifyCode">获取验证码</v-btn>
             <v-text-field v-model="verifyCode" label="验证码" hint="邮件验证码" type="number" clearable></v-text-field>
             <v-text-field v-model="sex" label="sex" type="number" clearable></v-text-field>
-            <v-text-field v-model="respect" label="sex" type="number" clearable></v-text-field>
+            <v-text-field v-model="respect" label="尊称模式" type="number" clearable></v-text-field>
             <v-btn @click="regTest">注册</v-btn>
           </v-form>
         </v-card-text>
@@ -61,7 +61,8 @@ export default {
           })
           .then(response => {
             if (response.data.code === 1000) {
-              this.showSnackBar('success','注册成功！')
+              this.showSnackBar('success','注册成功！正在跳转到登录，请稍后。')
+              this.$router.push({path: '/auth/login'})
             } else {
               this.showSnackBar('error','注册失败！')
             }
