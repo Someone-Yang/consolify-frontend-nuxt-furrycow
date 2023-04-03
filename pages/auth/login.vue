@@ -49,7 +49,8 @@ export default {
           })
           .then(response => {
             if (response.data.code === 1000) {
-              this.showSnackBar('success','登录成功！')
+              this.showSnackBar('success','登录成功！正在跳转到工作台。')
+              setTimeout(() => this.$router.push({path: '/table'}),1000)
             } else {
               this.showSnackBar('error','登录失败！')
             }

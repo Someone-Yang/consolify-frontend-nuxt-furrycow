@@ -69,7 +69,7 @@ export default {
           .then(response => {
             if (response.data.code === 1000) {
               this.showSnackBar('success','注册成功！正在转到控制台。')
-              this.$router.push({path: '/table'})
+              setTimeout(() => this.$router.push({path: '/table'}),1000)
             } else {
               this.showSnackBar('error','注册失败！')
             }

@@ -23,7 +23,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text :href="payUrl" target="_blank">前往支付</v-btn>
+        <v-btn text @click="openPayWindow">前往支付</v-btn>
         <v-btn text color="primary" @click="showDialog = false">我已支付完成</v-btn>
       </v-card-actions>
     </v-card>
@@ -66,11 +66,14 @@ export default {
         this.payUrl = response.data.data.url
         this.showDialog = true
         this.showSnackBar('success','获取订单信息成功！')
-        window.open(this.payUrl,"_blank")
+        setTimeout(() => this.openPayWindow(),1000)
       })
       .catch(error => {
         this.showSnackBar('error','获取订单信息失败。' + error.response.data.message + '。请稍后再试。')
       });
+    },
+    openPayWindow() {
+      window.open(this.payUrl,"payWindow","resizable=yes")
     }
   },
 }
